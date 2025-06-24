@@ -5,6 +5,7 @@ from .models import board, card
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from .routes.card_routes import bp as cards_bp
 
 # Import models, blueprints, and anything else needed to set up the app or database
 
@@ -22,6 +23,6 @@ def create_app(config=None):
     db.init_app(app)
     migrate.init_app(app, db)
     # Register Blueprints 
-
+    app.register_blueprint(cards_bp)
     CORS(app)
     return app
