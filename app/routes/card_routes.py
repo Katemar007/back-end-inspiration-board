@@ -1,6 +1,7 @@
 from flask import Blueprint, request, Response
 from flask import abort, make_response
 from ..models.card import Card
+from ..models.board import Board
 from .card_utilities import validate_model
 from ..db import db
 import requests
@@ -37,6 +38,14 @@ def get_all_cards_by_board(board_id):
 
     return cards_response
 
+@bp.put("/boards/<board_id>/cards/<card_id>/like")
+def like_card(board_id, card_id):
+    card = validate_model(Card, card_id)
+    card.likes_count += 1
+    db.session.commit()
+
+    return {"card": card.to_dict()}
+
 @bp.delete("/cards/<card_id>")
 def delete_card(card_id):
     card = validate_model(Card, card_id)
@@ -45,10 +54,10 @@ def delete_card(card_id):
 
     return Response(status = 204, mimetype = "application/json")
 
-@bp.put("/cards/<card_id>/like")
-def like_card(card_id):
-    card = validate_model(Card, card_id)
-    card.likes_count += 1
-    db.session.commit()
+# @bp.put("/cards/<card_id>/like")
+# def like_card(card_id):
+#     card = validate_model(Card, card_id)
+#     card.likes_count += 1
+#     db.session.commit()
 
-    return {"card": card.to_dict()}
+#     return {"card": card.to_dict()}
