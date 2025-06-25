@@ -37,34 +37,7 @@ def get_all_cards_by_board(board_id):
 
     return cards_response
 
-# @bp.get("/<card_id>")
-
-# def get_one_card(card_id):
-#     card = validate_model(Card, card_id)
-    
-#     response = {        
-#             "card_id" : card.card_id,
-#             "message": card.message,
-#             "likes_count": card.likes_count
-#         }
-#     if card.board_id is not None:
-#         response["board_id"] = card.board_id
-#     return {"card": response}
-
-# @bp.put("/cars/<card_id>")
-# def update_card(card_id):
-#     card = validate_model(Card, card_id)
-
-#     request_body = request.get_json()
-
-#     card.message = request_body["message"]
-#     card.likes_count = request_body["likes_count"]
- 
-#     db.session.commit()
-
-#     return Response(status = 204, mimetype = "application/json")
-
-@bp.delete("/cars/<card_id>")
+@bp.delete("/cards/<card_id>")
 def delete_card(card_id):
     card = validate_model(Card, card_id)
     db.session.delete(card)
