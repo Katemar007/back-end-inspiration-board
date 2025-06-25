@@ -7,7 +7,7 @@ def validate_model(cls, id):
     except: 
         abort(make_response({"details": "Invalid data"}, 400))
     
-    query = db.select(cls).where(cls.id == id)
+    query = db.select(cls).where(cls.card_id == id)
     model = db.session.scalar(query)
 
     if not model:

@@ -11,7 +11,7 @@ def validate_model(cls, model_id):
         response = {"message": f":{cls.__name__} with {model_id} invalid"}
         abort(make_response(response, 400))
     
-    query = db.select(cls).where(cls.id == model_id)
+    query = db.select(cls).where(cls.board_id == model_id)
     model = db.session.scalar(query)
 
     if not model:
@@ -41,4 +41,16 @@ def delete_model(cls, model_id):
     db.session.commit()
 
     return Response(status=204, mimetype="application/json")
-    
+
+
+def get_models_with_filters(cls, filters=None):
+    query = db.select(cls)
+
+    if filters:
+        for attribute, value in filters.items():
+            if hasattr(cls, attribute): 
+                query = query.where(getattr(cls, attribute).ilike(f"%{value}%"))
+    models = db.session.scalars(query.order_by(cls.board_id))
+    models_response = [model.to_dict() for model in models]
+
+    return models_response

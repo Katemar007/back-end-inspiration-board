@@ -2,7 +2,7 @@ from flask import Blueprint, abort, make_response, request, Response
 from app.models.board import Board
 from app.models.card import Card
 from ..db import db
-from .route_utilities import validate_model, create_model, delete_model
+from .board_utilities import validate_model, create_model, delete_model
 import requests
 import os
 
@@ -25,7 +25,7 @@ def get_all_boards():
     if title_param:
         query = query.where(Board.title.ilike(f"%{title_param}%"))
 
-    query = query.order_by(Board.id)
+    query = query.order_by(Board.board_id)
     result = db.session.execute(query)
     boards = result.scalars().all()
 
@@ -44,10 +44,11 @@ def get_one_board(board_id):
 
 @bp.put("/<board_id>")
 def update_one_board(board_id):
-    card = validate_model(Board, board_id)
+    board = validate_model(Board, board_id)
     request_body = request.get_json()
-    
-    card.title = request_body["title"]
+
+    board.title = request_body["title"]
+    board.owner = request_body["owner"]
 
     db.session.commit()
 
