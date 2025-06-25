@@ -13,7 +13,6 @@ from .routes.board_routes import bp as boards_bp
 
 def create_app(config=None):
     app = Flask(__name__)
-    CORS(app)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
