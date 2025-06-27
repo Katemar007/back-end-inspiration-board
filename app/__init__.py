@@ -27,6 +27,6 @@ def create_app(config=None):
     app.register_blueprint(boards_bp)
     app.register_blueprint(cards_bp)
     
-
-    CORS(app)
+    frontend_url = os.environ.get('FRONTEND_URL')
+    CORS(app, origins=os.environ.get(frontend_url))
     return app
