@@ -29,4 +29,6 @@ def create_app(config=None):
     
 
     CORS(app)
+    app.config['CORS_HEADERS'] = 'Content-Type'
+    
     return app
