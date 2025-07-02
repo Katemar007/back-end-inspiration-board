@@ -2,7 +2,7 @@ from flask import Blueprint, request, Response
 from flask import abort, make_response
 from ..models.card import Card
 from ..models.board import Board
-from .card_utilities import validate_model
+from .card_utilities import validate_model, send_message_card_created_slack
 from ..db import db
 import requests
 import os
@@ -23,6 +23,8 @@ def create_new_card(board_id):
     new_card = Card.from_dict(request_body)
     db.session.add(new_card)
     db.session.commit()
+
+    send_message_card_created_slack(new_card.message)
 
     return {
             "card":new_card.to_dict()

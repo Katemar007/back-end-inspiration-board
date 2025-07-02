@@ -27,8 +27,13 @@ def create_app(config=None):
     app.register_blueprint(boards_bp)
     app.register_blueprint(cards_bp)
     
+<<<<<<< HEAD
 
     CORS(app)
     app.config['CORS_HEADERS'] = 'Content-Type'
     
+=======
+    frontend_url = os.environ.get('FRONTEND_URI')
+    CORS(app, origins=frontend_url)
+>>>>>>> b5d6eab97a6b996ac0605dc2f444e81bc21a6233
     return app
