@@ -18,6 +18,14 @@ def create_app(config=None):
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
     app.config['CORS_HEADERS'] = 'Content-Type'
 
+    frontend_url = os.environ.get('FRONTEND_URI')
+    if frontend_url:
+        CORS(app, origins=[frontend_url])
+        print(f"CORS allowed for: {frontend_url}")
+    else:
+        CORS(app)
+        print("FRONTEND_URI not set. Allowing all origins.")
+        
 
     if config:
         app.config.update(config)
@@ -35,12 +43,12 @@ def create_app(config=None):
     def index():
         return {"message": "Welcome to the Inspiration Board API!"}, 200
 
-    frontend_url = os.environ.get('FRONTEND_URI')
-    if frontend_url:
-        CORS(app, origins=[frontend_url])
-        print(f"CORS allowed for: {frontend_url}")
-    else:
-        CORS(app)
-        print("FRONTEND_URI not set. Allowing all origins.")
-        
+    # frontend_url = os.environ.get('FRONTEND_URI')
+    # if frontend_url:
+    #     CORS(app, origins=[frontend_url])
+    #     print(f"CORS allowed for: {frontend_url}")
+    # else:
+    #     CORS(app)
+    #     print("FRONTEND_URI not set. Allowing all origins.")
+
     return app
