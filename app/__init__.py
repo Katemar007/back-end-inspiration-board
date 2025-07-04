@@ -19,9 +19,12 @@ def create_app(config=None):
     app.config['CORS_HEADERS'] = 'Content-Type'
 
     frontend_url = os.environ.get('FRONTEND_URI')
+    allowed_origins = [re.compile(r"http://localhost:\d+")] #local_url
+
     if frontend_url:
-        CORS(app, origins=[frontend_url])
-        print(f"CORS allowed for: {frontend_url}")
+        allowed_origins.append(frontend_url)
+        CORS(app, origins=allowed_origins)
+        print(f"CORS allowed for: {allowed_origins}")
     else:
         CORS(app)
         print("FRONTEND_URI not set. Allowing all origins.")
