@@ -2,12 +2,11 @@ from flask import Flask
 from flask_cors import CORS
 from .db import db, migrate
 from .models import board, card
-import os
+import os, re
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from .routes.card_routes import bp as cards_bp
 from .routes.board_routes import bp as boards_bp
-import re
 
 # Import models, blueprints, and anything else needed to set up the app or database
 
@@ -24,7 +23,10 @@ def create_app(config=None):
 
     if frontend_url:
         allowed_origins.append(frontend_url)
-        CORS(app, origins=allowed_origins)
+        CORS(
+        app, 
+        origins=allowed_origins,
+        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
         print(f"CORS allowed for: {allowed_origins}")
     else:
         CORS(app)
