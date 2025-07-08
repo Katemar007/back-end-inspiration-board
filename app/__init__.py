@@ -19,7 +19,7 @@ def create_app(config=None):
     app.config['CORS_HEADERS'] = 'Content-Type'
 
     frontend_url = os.environ.get('FRONTEND_URI')
-    allowed_origins = [re.compile(r"^http://localhost:\d+(/.*)?$")] #local_url
+    allowed_origins = [re.compile(r"^http://localhost:\d+/front-end-inspiration-board(/.*)?$")] #local_url
 
     if frontend_url:
         allowed_origins.append(frontend_url)
