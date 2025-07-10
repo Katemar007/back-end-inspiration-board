@@ -3,6 +3,7 @@ from flask import abort, make_response
 from ..models.card import Card
 from ..models.board import Board
 from .card_utilities import validate_model, send_message_card_created_slack
+from .board_utilities import validate_model_b
 from ..db import db
 import requests
 import os
@@ -13,13 +14,14 @@ bp = Blueprint("cards_bp", __name__)
 
 @bp.post("/boards/<board_id>/cards")
 def create_new_card(board_id):
+    board = validate_model_b(Board, board_id)
     request_body = request.get_json()
     if (
         not request_body
         or "message" not in request_body
     ):
         abort(make_response({"details": "Invalid data"}, 400))
-    request_body["board_id"] = int(board_id)
+    request_body["board_id"] = int(board.id)
     new_card = Card.from_dict(request_body)
     db.session.add(new_card)
     db.session.commit()

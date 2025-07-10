@@ -4,7 +4,7 @@ import os
 import requests
 
 
-def validate_model(cls, model_id):
+def validate_model_b(cls, model_id):
     try:
         model_id = int(model_id)
     except:

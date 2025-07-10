@@ -2,7 +2,7 @@ from flask import Blueprint, abort, make_response, request, Response
 from app.models.board import Board
 from app.models.card import Card
 from ..db import db
-from .board_utilities import validate_model, create_model, delete_model, get_models_with_filters
+from .board_utilities import validate_model_b, create_model, delete_model, get_models_with_filters
 import requests
 import os
 
@@ -36,13 +36,13 @@ def get_all_boards():
 
 @bp.get("/<board_id>")
 def get_one_board(board_id):
-    board = validate_model(Board, board_id)
+    board = validate_model_b(Board, board_id)
     return {"board": board.to_dict()}
 
 
 @bp.put("/<board_id>")
 def update_one_board(board_id):
-    board = validate_model(Board, board_id)
+    board = validate_model_b(Board, board_id)
     request_body = request.get_json()
 
     board.title = request_body["title"]
@@ -59,32 +59,3 @@ def delete_one_board(board_id):
     return delete_model(Board, board_id)
 
 
-# @bp.post("/<board_id>/cards")
-# def cards_to_board(board_id):
-#     board = validate_model(Board, board_id)
-    
-#     request_body = request.get_json()
-
-#     if "card_ids" in request_body:
-#         for card in board.cards:
-#             card.board_id = None
-
-#     card_list = request_body.get("card_ids")
-
-#     for card_id in card_list:
-#         card = validate_model(Card, card_id)
-#         card.board_id = board.id
-
-#     db.session.commit()
-
-#     return {
-#         "id": board.id,
-#         "card_ids": card_list
-#     }
-
-
-# @bp.get("/<board_id>/cards")
-# def cards_for_specific_board(board_id):
-#     board = validate_model(Board, board_id)
-
-#     return board.board_with_cards(), 200
